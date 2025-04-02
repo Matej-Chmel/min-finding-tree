@@ -1,7 +1,13 @@
 import ComparisonOperator.*
 
 enum class ComparisonOperator {
-    LESS_THAN, EQUALS, GREATER_THAN
+    LESS_THAN, EQUALS, GREATER_THAN;
+
+    override fun toString() = when (this) {
+        LESS_THAN -> "<"
+        EQUALS -> "=="
+        GREATER_THAN -> ">"
+    }
 }
 
 class Node (
