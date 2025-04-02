@@ -1,4 +1,5 @@
 import TaskType.*
+import java.io.File
 
 enum class TaskType {
     PROCESS_NODE,
@@ -37,7 +38,7 @@ fun generatePython(root: Node): String {
                     // Push the false branch as an else task (it will add the "else:" line).
                     stack.addLast(StackEntry(node.falseBranch!!, indent, PROCESS_ELSE))
                     // Then push the true branch for processing with increased indent.
-                    stack.addLast(StackEntry(node.trueBranch!!, indent + 1, PROCESS_NODE))
+                    stack.addLast(StackEntry(node.trueBranch, indent + 1, PROCESS_NODE))
                 }
             }
             PROCESS_ELSE -> {
@@ -48,4 +49,9 @@ fun generatePython(root: Node): String {
         }
     }
     return builder.toString().trimEnd()
+}
+
+fun writeFile(fullName: String, content: String) {
+    File(fullName).writeText(content)
+    println("Written: $fullName")
 }

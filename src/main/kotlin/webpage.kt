@@ -1,23 +1,49 @@
-import java.io.File
 import kotlin.math.pow
 
-fun generateWebpage(inputLengths: IntRange): String {
-    val decisionCounts = inputLengths.map { len ->
-        val tree = generateTree(len)
-        countDecisionNodes(tree)
-    }
-    val expectedCounts = inputLengths.map { len ->
-        (3.0.pow(len - 1) - 1.0).toInt()
+class TreeRecord(
+    val length: Int,
+    val actualDecisions: Int,
+    val expectedDecisions: Int,
+    val actualLeafs: Int
+) {
+    companion object {
+        fun getTableHeader() = """
+            <tr>
+                <th>Input Length</th>
+                <th>Expected Decisions</th>
+                <th>Actual Decisions</th>
+                <th>Actual Leafs</th>
+            </tr>
+        """.trimIndent()
     }
 
-    val tableRows = inputLengths.zip(decisionCounts).zip(expectedCounts).joinToString("\n") { data ->
-        val len = data.first.first
-        val decisions = data.first.second
-        val expected = data.second
-        "    <tr><td>$len</td><td>$decisions</td><td>$expected</td></tr>"
+    fun getTableRow() = """
+        <tr>
+            <td>$length</td>
+            <td>$expectedDecisions</td>
+            <td>$actualDecisions</td>
+            <td>$actualLeafs</td>
+        </tr>
+    """.trimIndent()
+}
+
+fun generateWebpage(inputLengths: IntRange): String {
+    val records = inputLengths.map { len ->
+        val root = generateTree(len)
+        val metrics = computeCommonMetrics(root)
+        TreeRecord(
+            length = len,
+            actualDecisions = metrics.decisions,
+            expectedDecisions = (3.0.pow(len - 1) - 1.0).toInt(),
+            actualLeafs = metrics.leafs
+        )
     }
-    val inputLengthsJs = inputLengths.joinToString(",")
-    val decisionCountsJs = decisionCounts.joinToString(",")
+
+    val rows = records.map(TreeRecord::getTableRow)
+    val jsLengths = inputLengths.joinToString(prefix = "[", postfix = "]", separator = ",")
+    val jsActualDecisions = records
+        .asSequence().map(TreeRecord::actualDecisions)
+        .joinToString(prefix = "[", postfix = "]", separator = ",")
 
     val htmlContent = """
         <!DOCTYPE html>
@@ -29,12 +55,8 @@ fun generateWebpage(inputLengths: IntRange): String {
         <body>
             <h1>Decision Tree Summary</h1>
             <table border="1">
-                <tr>
-                    <th>Input Length</th>
-                    <th>Decision Nodes</th>
-                    <th>Expected Count</th>
-                </tr>
-        $tableRows
+                ${TreeRecord.getTableHeader()}
+                ${rows.joinToString("\n")}
             </table>
             <!-- Line plot canvas -->
             <canvas id="lineChart" style="width:50vw; height:50vh;"></canvas>
@@ -43,10 +65,10 @@ fun generateWebpage(inputLengths: IntRange): String {
                 const chart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: [$inputLengthsJs],
+                        labels: $jsLengths,
                         datasets: [{
                             label: 'Decision Nodes',
-                            data: [$decisionCountsJs],
+                            data: $jsActualDecisions,
                             borderColor: 'rgba(75, 192, 192, 1)',
                             fill: false
                         }]
@@ -66,9 +88,4 @@ fun generateWebpage(inputLengths: IntRange): String {
     """.trimIndent()
 
     return htmlContent
-}
-
-fun writeIndexPage(content: String) {
-    File("index.html").writeText(content)
-    println("index.html generated.")
 }

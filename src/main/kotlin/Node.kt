@@ -11,7 +11,7 @@ enum class ComparisonOperator {
 }
 
 class Node (
-    var trueBranch: Node? = null,
+    val trueBranch: Node? = null,
     val falseBranch: Node? = null,
     val operator: ComparisonOperator = LESS_THAN,
     val indices: IntArray = intArrayOf()

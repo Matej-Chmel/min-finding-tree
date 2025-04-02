@@ -1,56 +1,127 @@
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Decision Tree Summary</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </head>
-    <body>
-        <h1>Decision Tree Summary</h1>
-        <table border="1">
-            <tr>
-                <th>Input Length</th>
-                <th>Decision Nodes</th>
-                <th>Expected Count</th>
-            </tr>
-        <tr><td>2</td><td>2</td><td>2</td></tr>
-<tr><td>3</td><td>8</td><td>8</td></tr>
-<tr><td>4</td><td>26</td><td>26</td></tr>
-<tr><td>5</td><td>80</td><td>80</td></tr>
-<tr><td>6</td><td>242</td><td>242</td></tr>
-<tr><td>7</td><td>728</td><td>728</td></tr>
-<tr><td>8</td><td>2186</td><td>2186</td></tr>
-<tr><td>9</td><td>6560</td><td>6560</td></tr>
-<tr><td>10</td><td>19682</td><td>19682</td></tr>
-<tr><td>11</td><td>59048</td><td>59048</td></tr>
-<tr><td>12</td><td>177146</td><td>177146</td></tr>
-<tr><td>13</td><td>531440</td><td>531440</td></tr>
-<tr><td>14</td><td>1594322</td><td>1594322</td></tr>
-<tr><td>15</td><td>4782968</td><td>4782968</td></tr>
-        </table>
-        <!-- Line plot canvas -->
-        <canvas id="lineChart" style="width:50vw; height:50vh;"></canvas>
-        <script>
-            const ctx = document.getElementById('lineChart').getContext('2d');
-            const chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-                    datasets: [{
-                        label: 'Decision Nodes',
-                        data: [2,8,26,80,242,728,2186,6560,19682,59048,177146,531440,1594322,4782968],
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        fill: false
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: { title: { display: true, text: 'Input Length'} },
-                        y: { title: { display: true, text: 'Decision Nodes'} }
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Decision Tree Summary</title>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        </head>
+        <body>
+            <h1>Decision Tree Summary</h1>
+            <table border="1">
+                <tr>
+    <th>Input Length</th>
+    <th>Expected Decisions</th>
+    <th>Actual Decisions</th>
+    <th>Actual Leafs</th>
+</tr>
+                <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>2</td>
+    <td>3</td>
+</tr>
+<tr>
+    <td>3</td>
+    <td>8</td>
+    <td>8</td>
+    <td>9</td>
+</tr>
+<tr>
+    <td>4</td>
+    <td>26</td>
+    <td>26</td>
+    <td>27</td>
+</tr>
+<tr>
+    <td>5</td>
+    <td>80</td>
+    <td>80</td>
+    <td>81</td>
+</tr>
+<tr>
+    <td>6</td>
+    <td>242</td>
+    <td>242</td>
+    <td>243</td>
+</tr>
+<tr>
+    <td>7</td>
+    <td>728</td>
+    <td>728</td>
+    <td>729</td>
+</tr>
+<tr>
+    <td>8</td>
+    <td>2186</td>
+    <td>2186</td>
+    <td>2187</td>
+</tr>
+<tr>
+    <td>9</td>
+    <td>6560</td>
+    <td>6560</td>
+    <td>6561</td>
+</tr>
+<tr>
+    <td>10</td>
+    <td>19682</td>
+    <td>19682</td>
+    <td>19683</td>
+</tr>
+<tr>
+    <td>11</td>
+    <td>59048</td>
+    <td>59048</td>
+    <td>59049</td>
+</tr>
+<tr>
+    <td>12</td>
+    <td>177146</td>
+    <td>177146</td>
+    <td>177147</td>
+</tr>
+<tr>
+    <td>13</td>
+    <td>531440</td>
+    <td>531440</td>
+    <td>531441</td>
+</tr>
+<tr>
+    <td>14</td>
+    <td>1594322</td>
+    <td>1594322</td>
+    <td>1594323</td>
+</tr>
+<tr>
+    <td>15</td>
+    <td>4782968</td>
+    <td>4782968</td>
+    <td>4782969</td>
+</tr>
+            </table>
+            <!-- Line plot canvas -->
+            <canvas id="lineChart" style="width:50vw; height:50vh;"></canvas>
+            <script>
+                const ctx = document.getElementById('lineChart').getContext('2d');
+                const chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+                        datasets: [{
+                            label: 'Decision Nodes',
+                            data: [2,8,26,80,242,728,2186,6560,19682,59048,177146,531440,1594322,4782968],
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: { title: { display: true, text: 'Input Length'} },
+                            y: { title: { display: true, text: 'Decision Nodes'} }
+                        }
                     }
-                }
-            });
-            chart.height("50%");
-            chart.width("50%");
-        </script>
-    </body>
-    </html>
+                });
+                chart.height("50%");
+                chart.width("50%");
+            </script>
+        </body>
+        </html>
