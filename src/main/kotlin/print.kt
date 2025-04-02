@@ -12,6 +12,7 @@ fun generatePython(root: Node): String {
     val builder = StringBuilder()
     val stack = ArrayDeque<StackEntry>()
     stack.addLast(StackEntry(root, 0, PROCESS_NODE))
+    val labels = "ABCDEFGH"
 
     while (stack.isNotEmpty()) {
         val entry = stack.removeLast()
@@ -23,12 +24,12 @@ fun generatePython(root: Node): String {
             PROCESS_NODE -> {
                 if (node.trueBranch == null) {
                     // Leaf node: output the return statement.
-                    val indices = node.indices.joinToString(", ")
-                    builder.append(indentStr).append("return input[").append(indices).append("]\n")
+                    val indices = node.indices.map { labels[it] }.joinToString(", ")
+                    builder.append(indentStr).append("return ").append(indices).append("\n")
                 } else {
                     // Decision node: output an if statement.
-                    val left = "input[${node.indices[0]}]"
-                    val right = "input[${node.indices[1]}]"
+                    val left = labels[node.indices[0]]
+                    val right = labels[node.indices[1]]
                     val op = when (node.operator) {
                         ComparisonOperator.LESS_THAN -> "<"
                         ComparisonOperator.EQUALS -> "=="
